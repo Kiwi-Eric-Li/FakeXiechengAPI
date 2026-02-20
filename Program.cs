@@ -18,7 +18,11 @@ namespace FakeXiechengAPI
              */
 
             // 注册控制器的服务
-            builder.Services.AddControllers();
+            builder.Services.AddControllers(setupAction =>
+            {
+                setupAction.ReturnHttpNotAcceptable = true;
+            }).AddXmlDataContractSerializerFormatters();
+
             // 把一个接口和它的实现类注册到容器中
             builder.Services.AddScoped<ITouristRouteRepository, MockTouristRouteRepository>();
             // 把 AppDbContext 注册到依赖注入容器
@@ -26,6 +30,9 @@ namespace FakeXiechengAPI
                 options.UseSqlite(builder.Configuration["ConnectionStrings:DefaultConnection"])
 
             );
+
+            // 扫描 profile 文件
+            builder.Services.AddAutoMapper(AppDomain.CurrentDomain.GetAssemblies());
 
             var app = builder.Build();
 
