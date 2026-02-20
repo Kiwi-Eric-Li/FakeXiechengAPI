@@ -33,6 +33,9 @@ namespace FakeXiechengAPI.Profiles
                     dest => dest.Id,
                     opt => opt.MapFrom(src => Guid.NewGuid())
                 );
+
+            // 将 TouristRouteForUpdateDto 映射给 TouristRoute
+            CreateMap<TouristRouteForUpdateDto, TouristRoute>();
         }
     }
 }

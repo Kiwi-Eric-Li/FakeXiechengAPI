@@ -8,7 +8,10 @@ namespace FakeXiechengAPI.Profiles
     {
         public TouristRoutePictureProfile()
         {
+            // 将 TouristRoutePicture 映射给 TouristRoutePictureDto
             CreateMap<TouristRoutePicture, TouristRoutePictureDto>();
+            // 将 TouristRoutePictureDto 映射给 TouristRoutePicture
+            CreateMap<TouristRoutePictureDto, TouristRoutePicture>();
         }
     }
 }
