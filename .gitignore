@@ -16,3 +16,5 @@ obj/
 # 其他常见忽略项
 _ReSharper*/
 *.DotSettings.user
+
+*.json

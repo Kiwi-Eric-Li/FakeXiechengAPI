@@ -3,7 +3,7 @@ using System.ComponentModel.DataAnnotations;
 
 namespace FakeXiechengAPI.ValidationAttributes
 {
-    public class TouristRouteTitleMustBeDifferentFromDescriptionAttribute: ValidationAttributes
+    public class TouristRouteTitleMustBeDifferentFromDescriptionAttribute: ValidationAttribute
     {
         protected override ValidationResult IsValid(object value, ValidationContext validationContext)
         {

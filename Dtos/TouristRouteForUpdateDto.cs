@@ -6,6 +6,6 @@ namespace FakeXiechengAPI.Dtos
     {
         [Required(ErrorMessage = "更新必备")]
         [MaxLength(1500)]
-        public override string Description { get; set; }
+        public string Description { get; set; }
     }
 }

@@ -1,6 +1,10 @@
 using FakeXiechengAPI.Database;
 using FakeXiechengAPI.Services;
 using Microsoft.EntityFrameworkCore;
+using AutoMapper;
+using Microsoft.AspNetCore.Authentication.JwtBearer;
+using Microsoft.IdentityModel.Tokens;
+using System.Text;
 
 namespace FakeXiechengAPI
 {
@@ -17,6 +21,26 @@ namespace FakeXiechengAPI
              *
              */
 
+            // 服务器配置验证客户端传来的JWT是否合法
+            builder.Services.AddAuthentication(JwtBearerDefaults.AuthenticationScheme)
+                .AddJwtBearer(options => {
+                    var secretByte = Encoding.UTF8.GetBytes(builder.Configuration["Authentication:SecretKey"]);
+                    options.TokenValidationParameters = new TokenValidationParameters()
+                    {
+                        ValidateIssuer = true,
+                        ValidIssuer = builder.Configuration["Authentication:Issuer"],
+
+                        ValidateAudience = true,
+                        ValidAudience = builder.Configuration["Authentication:Audience"],
+
+                        ValidateLifetime = true,
+
+                        IssuerSigningKey = new SymmetricSecurityKey(secretByte)
+                    };
+            });
+
+
+
             // 注册控制器的服务
             builder.Services.AddControllers(setupAction =>
             {
@@ -24,7 +48,7 @@ namespace FakeXiechengAPI
             }).AddXmlDataContractSerializerFormatters();
 
             // 把一个接口和它的实现类注册到容器中
-            builder.Services.AddScoped<ITouristRouteRepository, MockTouristRouteRepository>();
+            builder.Services.AddScoped<ITouristRouteRepository, TouristRouteRepository>();
             // 把 AppDbContext 注册到依赖注入容器
             builder.Services.AddDbContext<AppDbContext>(options =>
                 options.UseSqlite(builder.Configuration["ConnectionStrings:DefaultConnection"])
@@ -35,6 +59,11 @@ namespace FakeXiechengAPI
             builder.Services.AddAutoMapper(AppDomain.CurrentDomain.GetAssemblies());
 
             var app = builder.Build();
+
+            // 你是谁？
+            app.UseAuthentication();
+            // 你可以干什么？你有什么权限？
+            app.UseAuthorization();
 
             // 请求处理管道，它将控制器的路由映射到处理请求的管道中
             app.MapControllers();
