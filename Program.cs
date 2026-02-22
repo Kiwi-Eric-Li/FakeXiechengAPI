@@ -50,9 +50,9 @@ namespace FakeXiechengAPI
             // 把一个接口和它的实现类注册到容器中
             builder.Services.AddScoped<ITouristRouteRepository, TouristRouteRepository>();
             // 把 AppDbContext 注册到依赖注入容器
+            var connectionString = builder.Configuration.GetConnectionString("DefaultConnection");
             builder.Services.AddDbContext<AppDbContext>(options =>
-                options.UseSqlite(builder.Configuration["ConnectionStrings:DefaultConnection"])
-
+                options.UseMySql(connectionString, ServerVersion.AutoDetect(connectionString))
             );
 
             // 扫描 profile 文件

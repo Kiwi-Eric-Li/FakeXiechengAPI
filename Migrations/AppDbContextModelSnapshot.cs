@@ -3,6 +3,7 @@ using System;
 using FakeXiechengAPI.Database;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
+using Microsoft.EntityFrameworkCore.Metadata;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 
 #nullable disable
@@ -15,59 +16,90 @@ namespace FakeXiechengAPI.Migrations
         protected override void BuildModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
-            modelBuilder.HasAnnotation("ProductVersion", "8.0.23");
+            modelBuilder
+                .HasAnnotation("ProductVersion", "8.0.23")
+                .HasAnnotation("Relational:MaxIdentifierLength", 64);
+
+            MySqlModelBuilderExtensions.AutoIncrementColumns(modelBuilder);
+
+            modelBuilder.Entity("FakeXiechengAPI.Models.Role", b =>
+                {
+                    b.Property<Guid>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("char(36)");
+
+                    b.Property<string>("RoleName")
+                        .IsRequired()
+                        .HasColumnType("longtext");
+
+                    b.HasKey("Id");
+
+                    b.ToTable("Roles");
+
+                    b.HasData(
+                        new
+                        {
+                            Id = new Guid("964aa5e0-0edb-11f1-92ce-00ffe41eb25b"),
+                            RoleName = "admin"
+                        },
+                        new
+                        {
+                            Id = new Guid("9d22733c-0edb-11f1-92ce-00ffe41eb25b"),
+                            RoleName = "user"
+                        });
+                });
 
             modelBuilder.Entity("FakeXiechengAPI.Models.TouristRoute", b =>
                 {
                     b.Property<Guid>("Id")
                         .ValueGeneratedOnAdd()
-                        .HasColumnType("TEXT");
+                        .HasColumnType("char(36)");
 
                     b.Property<DateTime>("CreateTime")
-                        .HasColumnType("TEXT");
+                        .HasColumnType("datetime(6)");
 
                     b.Property<int?>("DepartureCity")
-                        .HasColumnType("INTEGER");
+                        .HasColumnType("int");
 
                     b.Property<DateTime?>("DepartureTime")
-                        .HasColumnType("TEXT");
+                        .HasColumnType("datetime(6)");
 
                     b.Property<string>("Description")
                         .IsRequired()
                         .HasMaxLength(1500)
-                        .HasColumnType("TEXT");
+                        .HasColumnType("varchar(1500)");
 
                     b.Property<double?>("DiscountPresent")
-                        .HasColumnType("REAL");
+                        .HasColumnType("double");
 
                     b.Property<string>("Features")
-                        .HasColumnType("TEXT");
+                        .HasColumnType("longtext");
 
                     b.Property<string>("Fees")
-                        .HasColumnType("TEXT");
+                        .HasColumnType("longtext");
 
                     b.Property<string>("Notes")
-                        .HasColumnType("TEXT");
+                        .HasColumnType("longtext");
 
                     b.Property<decimal>("OriginalPrice")
                         .HasColumnType("decimal(18,2)");
 
                     b.Property<double?>("Rating")
-                        .HasColumnType("REAL");
+                        .HasColumnType("double");
 
                     b.Property<string>("Title")
                         .IsRequired()
                         .HasMaxLength(100)
-                        .HasColumnType("TEXT");
+                        .HasColumnType("varchar(100)");
 
                     b.Property<int?>("TravelDays")
-                        .HasColumnType("INTEGER");
+                        .HasColumnType("int");
 
                     b.Property<int?>("TripType")
-                        .HasColumnType("INTEGER");
+                        .HasColumnType("int");
 
                     b.Property<DateTime?>("UpdateTime")
-                        .HasColumnType("TEXT");
+                        .HasColumnType("datetime(6)");
 
                     b.HasKey("Id");
 
@@ -321,14 +353,16 @@ namespace FakeXiechengAPI.Migrations
                 {
                     b.Property<int>("Id")
                         .ValueGeneratedOnAdd()
-                        .HasColumnType("INTEGER");
+                        .HasColumnType("int");
+
+                    MySqlPropertyBuilderExtensions.UseMySqlIdentityColumn(b.Property<int>("Id"));
 
                     b.Property<Guid>("TouristRouteId")
-                        .HasColumnType("TEXT");
+                        .HasColumnType("char(36)");
 
                     b.Property<string>("Url")
                         .HasMaxLength(100)
-                        .HasColumnType("TEXT");
+                        .HasColumnType("varchar(100)");
 
                     b.HasKey("Id");
 
@@ -744,6 +778,56 @@ namespace FakeXiechengAPI.Migrations
                             Id = 68,
                             TouristRouteId = new Guid("39996f34-013c-4fc6-b1b3-0c1036c47119"),
                             Url = "../../assets/images/louvre-102840_640.jpg"
+                        });
+                });
+
+            modelBuilder.Entity("FakeXiechengAPI.Models.User", b =>
+                {
+                    b.Property<Guid>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("char(36)");
+
+                    b.Property<string>("Email")
+                        .IsRequired()
+                        .HasColumnType("longtext");
+
+                    b.Property<string>("Password")
+                        .IsRequired()
+                        .HasColumnType("longtext");
+
+                    b.Property<string>("Phone")
+                        .IsRequired()
+                        .HasColumnType("longtext");
+
+                    b.Property<Guid>("RoleId")
+                        .HasColumnType("char(36)");
+
+                    b.Property<string>("UserName")
+                        .IsRequired()
+                        .HasColumnType("longtext");
+
+                    b.HasKey("Id");
+
+                    b.ToTable("Users");
+
+                    b.HasData(
+                        new
+                        {
+                            Id = new Guid("89597e9b-0eda-11f1-92ce-00ffe41eb25b"),
+                            Email = "eric@gmail.com",
+                            Password = "$2a$11$TcIOLNVo2G/UfaqKYFHtKuOB2SRjW5/efAPOrg4nxrI3r332sqmXu",
+                            Phone = "0220810266",
+                            RoleId = new Guid("964aa5e0-0edb-11f1-92ce-00ffe41eb25b"),
+                            UserName = "Eric"
+                        },
+                        new
+                        {
+                            Id = new Guid("93341192-0eda-11f1-92ce-00ffe41eb25b"),
+                            Email = "lxf7756@126.com",
+                            Password = "$2a$11$TcIOLNVo2G/UfaqKYFHtKuOB2SRjW5/efAPOrg4nxrI3r332sqmXu",
+                            Phone = "15101596939",
+                            RoleId = new Guid("9d22733c-0edb-11f1-92ce-00ffe41eb25b"),
+                            UserName = "Lxf"
                         });
                 });
 

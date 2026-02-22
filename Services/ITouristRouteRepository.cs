@@ -10,8 +10,9 @@ namespace FakeXiechengAPI.Services
         Task<bool> TouristRouteExistsAsync(Guid touristRouteId);
         Task<IEnumerable<TouristRoutePicture>> GetPicturesByTouristRouteIdAsync(Guid touristRouteId);
         Task<TouristRoutePicture> GetPictureAsync(int pictureId);
-
         Task<bool> SaveAsync();
+        Task<bool> ValidateLoginUserAsync(string email, string password);
+
         void AddTouristRoute(TouristRoute touristRoute);
         void AddTouristRoutePicture(Guid touristRouteId, TouristRoutePicture touristRoutePicture);
         void DeleteTouristRoute(TouristRoute touristRoute);

@@ -14,6 +14,8 @@ namespace FakeXiechengAPI.Database
 
         public DbSet<TouristRoute> TouristRoutes { get; set; }
         public DbSet<TouristRoutePicture> TouristRoutePictures { get; set; }
+        public DbSet<User> Users { get; set; }
+        public DbSet<Role> Roles { get; set; }
 
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {
@@ -25,6 +27,13 @@ namespace FakeXiechengAPI.Database
             IList<TouristRoutePicture> touristRoutePictures = JsonConvert.DeserializeObject<IList<TouristRoutePicture>>(touristRoutePictureJsonData);
             modelBuilder.Entity<TouristRoutePicture>().HasData(touristRoutePictures);
 
+            var userJsonData = File.ReadAllText(Path.GetDirectoryName(Assembly.GetExecutingAssembly().Location) + @"/Database/usersMockData.json");
+            IList<User> users = JsonConvert.DeserializeObject<IList<User>>(userJsonData);
+            modelBuilder.Entity<User>().HasData(users);
+
+            var roleJsonData = File.ReadAllText(Path.GetDirectoryName(Assembly.GetExecutingAssembly().Location) + @"/Database/rolesMockData.json");
+            IList<Role> roles = JsonConvert.DeserializeObject<IList<Role>>(roleJsonData);
+            modelBuilder.Entity<Role>().HasData(roles);
 
             base.OnModelCreating(modelBuilder);
         }
