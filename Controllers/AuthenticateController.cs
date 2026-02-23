@@ -10,8 +10,6 @@ using BCrypt.Net;
 namespace FakeXiechengAPI.Controllers
 {
     
-
-
     [Route("auth")]
     [ApiController]
     public class AuthenticateController: ControllerBase

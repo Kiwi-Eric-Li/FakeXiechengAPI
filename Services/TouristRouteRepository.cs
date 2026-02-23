@@ -104,5 +104,15 @@ namespace FakeXiechengAPI.Services
         {
             return (await _context.SaveChangesAsync() >= 0);
         }
+
+        public async Task<bool> ValidateLoginUserAsync(string email, string password)
+        {
+            return (await _context.SaveChangesAsync() >= 0);
+        }
+
+        public async Task<ShoppingCart> GetShoppingCartByUserId(string userId)
+        {
+            return await _context.ShoppingCarts.Include(s => s.User).Include(s => s.ShoppingCartItems).ThenInclude(li => li.TouristRoute).Where(s=> s.UserId == userId).FirstOrDefaultAsync();
+        }
     }
 }

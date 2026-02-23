@@ -12,6 +12,7 @@ namespace FakeXiechengAPI.Services
         Task<TouristRoutePicture> GetPictureAsync(int pictureId);
         Task<bool> SaveAsync();
         Task<bool> ValidateLoginUserAsync(string email, string password);
+        Task<ShoppingCart> GetShoppingCartByUserId(string userId);
 
         void AddTouristRoute(TouristRoute touristRoute);
         void AddTouristRoutePicture(Guid touristRouteId, TouristRoutePicture touristRoutePicture);
