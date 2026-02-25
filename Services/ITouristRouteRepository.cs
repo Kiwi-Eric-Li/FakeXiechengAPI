@@ -1,4 +1,5 @@
-﻿using FakeXiechengAPI.Models;
+﻿using FakeXiechengAPI.Dtos;
+using FakeXiechengAPI.Models;
 using System.Threading.Tasks;
 
 namespace FakeXiechengAPI.Services
@@ -11,8 +12,10 @@ namespace FakeXiechengAPI.Services
         Task<IEnumerable<TouristRoutePicture>> GetPicturesByTouristRouteIdAsync(Guid touristRouteId);
         Task<TouristRoutePicture> GetPictureAsync(int pictureId);
         Task<bool> SaveAsync();
-        Task<bool> ValidateLoginUserAsync(string email, string password);
+        Task<User> ValidateLoginUserAsync(string email, string password);
+        void AddUser(User user);
         Task<ShoppingCart> GetShoppingCartByUserId(string userId);
+        Task<Role> GetRoleByRoleName(string roleName);
 
         void AddTouristRoute(TouristRoute touristRoute);
         void AddTouristRoutePicture(Guid touristRouteId, TouristRoutePicture touristRoutePicture);

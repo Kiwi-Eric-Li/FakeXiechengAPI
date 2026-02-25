@@ -27,9 +27,9 @@ namespace FakeXiechengAPI.Controllers
             // 获取当前用户
             var userId = _httpContextAccessor.HttpContext.User.FindFirst(ClaimTypes.NameIdentifier).Value;
             // 使用 userId 获取购物车
-            _touristRouteRepository.GetShoppingCartByUserId(userId);
+            var shoppingCart = _touristRouteRepository.GetShoppingCartByUserId(userId);
 
-
+            return null;
 
         }
     }

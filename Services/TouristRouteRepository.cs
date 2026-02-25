@@ -1,6 +1,8 @@
 ﻿using FakeXiechengAPI.Database;
+using FakeXiechengAPI.Dtos;
 using FakeXiechengAPI.Models;
 using Microsoft.EntityFrameworkCore;
+using System.Collections.Generic;
 
 namespace FakeXiechengAPI.Services
 {
@@ -23,7 +25,7 @@ namespace FakeXiechengAPI.Services
         {
             // Include() vs. join()  连接两张表
             IQueryable<TouristRoute> result = _context.TouristRoutes.Include(t => t.TouristRoutePictures);
-            if(keyword != null || keyword != "")
+            if(keyword != null && keyword != "")
             {
                 keyword = keyword.Trim();
                 result = result.Where(t => t.Title.Contains(keyword));
@@ -105,9 +107,29 @@ namespace FakeXiechengAPI.Services
             return (await _context.SaveChangesAsync() >= 0);
         }
 
-        public async Task<bool> ValidateLoginUserAsync(string email, string password)
+        public async Task<User> ValidateLoginUserAsync(string email, string password)
         {
-            return (await _context.SaveChangesAsync() >= 0);
+            var user = await _context.Users.FirstOrDefaultAsync(u => u.Email == email);
+
+            if(user != null && BCrypt.Net.BCrypt.Verify(password, user.Password))
+            {
+                return user;
+            }
+            else
+            {
+                return null;
+            }
+        }
+
+        public async Task<Role> GetRoleByRoleName(string roleName)
+        {
+            return await _context.Roles.Where(r => r.RoleName == roleName).FirstOrDefaultAsync();
+        }
+
+        public void AddUser(User user)
+        {
+            _context.Add(user);
+            _context.SaveChanges();
         }
 
         public async Task<ShoppingCart> GetShoppingCartByUserId(string userId)
